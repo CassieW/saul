@@ -14,8 +14,8 @@ import scala.collection.JavaConversions._
 
 object SpamApp extends Logging {
 
-  val trainData = new DocumentReader("../data/EmailSpam/train").docs.toList
-  val testData = new DocumentReader("../data/EmailSpam/test").docs.toList
+  val trainData = new DocumentReader("data/EmailSpam/train").docs.toList
+  val testData = new DocumentReader("data/EmailSpam/test").docs.toList
 
   object SpamExperimentType extends Enumeration {
     val TrainAndTest, CacheGraph, TestUsingGraphCache, TestSerialization = Value
@@ -23,7 +23,7 @@ object SpamApp extends Logging {
 
   def main(args: Array[String]): Unit = {
     /** Choose the experiment you're interested in by changing the following line */
-    val testType = SpamExperimentType.TestSerialization
+    val testType = SpamExperimentType.TrainAndTest
 
     testType match {
       case SpamExperimentType.TrainAndTest => TrainAndTestSpamClassifier()
@@ -37,8 +37,8 @@ object SpamApp extends Logging {
   def TrainAndTestSpamClassifier(): Unit = {
     /** Defining the data and specifying it's location  */
     SpamDataModel.docs populate trainData
-    SpamClassifier.learn(30)
-    SpamClassifier.test(testData)
+    SpamClassifierWeka.learn(30)
+    SpamClassifierWeka.test(testData)
   }
 
   /** Spam Classifcation, followed by caching the data-model graph. */
